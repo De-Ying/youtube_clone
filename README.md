@@ -51,6 +51,11 @@ module.exports = {
 @tailwind utilities;
 ```
 
+## API Setup 
+
+[⭐ Youtube API](https://rapidapi.com/Glavier/api/youtube138/)
+[⭐ Rapid API](https://rapidapi.com/hub)
+
 ## In this project you will know
 
 - React 18 và các tính năng mới nhất của nó
