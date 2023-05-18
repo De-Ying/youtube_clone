@@ -56,6 +56,10 @@ module.exports = {
 [⭐ Youtube API](https://rapidapi.com/Glavier/api/youtube138/)
 [⭐ Rapid API](https://rapidapi.com/hub)
 
+## Generate random user avatars
+
+[⭐ Random User](https://www.stefanjudis.com/blog/apis-to-generate-random-user-avatars/)
+
 ## In this project you will know
 
 - React 18 và các tính năng mới nhất của nó
