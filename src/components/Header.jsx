@@ -12,7 +12,7 @@ import { CgClose } from "react-icons/cg";
 import { BsKeyboard } from "react-icons/bs";
 
 import { AppContext } from "../context/contextApi";
-import Loader from "../shared/Loader";
+import Loader from "../shared/loader";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,7 +24,7 @@ const Header = () => {
   const searchQueryHandler = (event) => {
     if (
       (event?.key === "Enter" || event === "searchButton") &&
-      searchQuery.length > 0
+      searchQuery?.length > 0
     ) {
       navigate(`/searchResult/${searchQuery}`);
     }
@@ -71,13 +71,16 @@ const Header = () => {
           <input
             type="text"
             className="bg-transparent outline-none text-white pr-5 pl-5 md:pl-0 w-44 md:group-focus-within:pl-0 md:w-64 lg:w-[500px]"
-            id="Enter"
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyUp={searchQueryHandler}
             placeholder="Search"
             value={searchQuery}
+            id="Enter"
           />
-          <label for="Enter" className="w-10 flex items-center justify-center group-focus-within:md:flex text-white text-lg cursor-pointer">
+          <label
+            htmlFor="Enter"
+            className="w-10 flex items-center justify-center group-focus-within:md:flex text-white text-lg cursor-pointer"
+          >
             <BsKeyboard />
           </label>
         </div>
@@ -99,8 +102,8 @@ const Header = () => {
         </div>
         <div className="flex h-8 w-8 overflow-hidden rounded-full md:ml-4">
           <img
-            src="https://xsgames.co/randomusers/avatar.php?g=female"
-            alt="avatar"
+            src="https://xsgames.co/randomusers/assets/avatars/female/67.jpg"
+            alt=""
           />
         </div>
       </div>

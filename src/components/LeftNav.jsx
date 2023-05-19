@@ -14,9 +14,9 @@ const LeftNav = () => {
 
   const clickHandler = (name, type) => {
     switch (type) {
-      case "home":
-        return setSelectedCategory(name);
       case "category":
+        return setSelectedCategory(name);
+      case "home":
         return setSelectedCategory(name);
       case "menu":
         return false;

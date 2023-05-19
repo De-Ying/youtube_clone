@@ -9,20 +9,23 @@ import SearchResult from "./components/SearchResult";
 import VideoDetails from "./components/VideoDetails";
 
 const App = () => {
-  return (
-    <AppProvider>
-        <BrowserRouter>
-            <div className="flex flex-col h-full">
-                <Header />
-                <Routes>
-                    <Route exact path="/" element={<Feed />}></Route>
-                    <Route path="/searchResult/:searchQuery" element={<SearchResult />}></Route>
-                    <Route path="/video/:id" element={<VideoDetails />}></Route>
-                </Routes>
-            </div>
-        </BrowserRouter>
-    </AppProvider>
-  );
+    return (
+        <AppProvider>
+            <BrowserRouter>
+                <div className="flex flex-col h-full">
+                    <Header />
+                    <Routes>
+                        <Route path="/" exact element={<Feed />} />
+                        <Route
+                            path="/searchResult/:searchQuery"
+                            element={<SearchResult />}
+                        />
+                        <Route path="/video/:id" element={<VideoDetails />} />
+                    </Routes>
+                </div>
+            </BrowserRouter>
+        </AppProvider>
+    );
 };
 
 export default App;

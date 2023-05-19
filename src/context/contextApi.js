@@ -1,7 +1,6 @@
-import React, {createContext, useState, useEffect} from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 import { fetchDataFromApi } from "../utils/api";
-
 export const AppContext = createContext();
 
 export const AppProvider = (props) => {
@@ -11,29 +10,31 @@ export const AppProvider = (props) => {
     const [mobileMenu, setMobileMenu] = useState(false);
 
     useEffect(() => {
-        fetchSelectedCategoryData(selectedCategory)
-    },[selectedCategory]);
+        fetchSelectedCategoryData(selectedCategory);
+    }, [selectedCategory]);
 
     const fetchSelectedCategoryData = (query) => {
         setLoading(true);
-        
         fetchDataFromApi(`search/?q=${query}`).then(({ contents }) => {
+            console.log(contents);
             setSearchResults(contents);
             setLoading(false);
         });
-    } 
+    };
 
     return (
-        <AppContext.Provider value={{
-            loading,
-            setLoading,
-            searchResults,
-            selectedCategory,
-            setSelectedCategory,
-            mobileMenu,
-            setMobileMenu,
-        }}>
+        <AppContext.Provider
+            value={{
+                loading,
+                setLoading,
+                searchResults,
+                selectedCategory,
+                setSelectedCategory,
+                mobileMenu,
+                setMobileMenu,
+            }}
+        >
             {props.children}
         </AppContext.Provider>
-    )
-}
+    );
+};
