@@ -1,5 +1,7 @@
 import axios from "axios";
 
+// Rapid API
+
 const BASE_URL = "https://youtube138.p.rapidapi.com";
 
 const options = {
@@ -11,7 +13,10 @@ const options = {
     },
 };
 
+// Google API
+
 export const fetchDataFromApi = async (url) => {
     const { data } = await axios.get(`${BASE_URL}/${url}`, options);
     return data;
 };
+

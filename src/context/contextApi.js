@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 
 import { fetchDataFromApi } from "../utils/api";
 export const AppContext = createContext();
@@ -9,17 +9,17 @@ export const AppProvider = (props) => {
     const [selectedCategory, setSelectedCategory] = useState("New");
     const [mobileMenu, setMobileMenu] = useState(false);
 
-    useEffect(() => {
-        fetchSelectedCategoryData(selectedCategory);
-    }, [selectedCategory]);
-
-    const fetchSelectedCategoryData = (query) => {
+    const fetchSelectedCategoryData = useCallback((query) => {
         setLoading(true);
         fetchDataFromApi(`search/?q=${query}`).then(({ contents }) => {
             setSearchResults(contents);
             setLoading(false);
         });
-    };
+    }, []);
+
+    useEffect(() => {
+        fetchSelectedCategoryData(selectedCategory);
+    }, [selectedCategory, fetchSelectedCategoryData]);
 
     return (
         <AppContext.Provider

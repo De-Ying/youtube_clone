@@ -8,7 +8,7 @@ Use extension [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/i
 
 ```bash
 npm i @tailwindcss/line-clamp axios js-abbreviation-number react-player moment
-npm i react-router-dom react-icons
+npm i react-router-dom react-icons emoji-mart better-react-carousel
 ```
 
 ## Installed NPM Packages
@@ -20,6 +20,8 @@ npm i react-router-dom react-icons
 [Moment](https://www.npmjs.com/package/moment)
 [React Router DOM](https://www.npmjs.com/package/react-router-dom)
 [React Icons](https://www.npmjs.com/package/react-icons)
+[Emoji Mart](https://www.npmjs.com/package/emoji-mart)
+[Better React Carousel](https://www.npmjs.com/package/better-react-carousel)
 
 ## Setup Tailwindcss
 
@@ -35,12 +37,13 @@ npx tailwindcss init
 ```js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}"],
-  theme: {
-    extend: {},
-  },
-  plugins: [require("@tailwindcss/line-clamp")],
-}
+    darkMode: 'class',
+    content: ["./src/**/*.{js,jsx,ts,tsx}"],
+    theme: {
+        extend: {},
+    }, 
+    plugins: [require("@tailwindcss/line-clamp")],
+};
 ```
 
 #### Add the Tailwind directives to your CSS

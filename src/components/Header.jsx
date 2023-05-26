@@ -19,38 +19,23 @@ import Loader from "../shared/loader";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [result, setResult] = useState();
-  const [showAutocomplete, setShowAutocomplete] = useState(false);
+  // const [result, setResult] = useState();
+  // const [showAutocomplete, setShowAutocomplete] = useState(false);
 
   const { loading, mobileMenu, setMobileMenu } = useContext(AppContext);
 
-  const wrapperRef = useRef();
+  // const wrapperRef = useRef();
 
   // useEffect(() => {
-  //   document.addEventListener("mousedown", handleClickOutSide);
+  //   document.getElementById("root").classList.remove("custom-h");
+  //   fetchAutoCompleteResults();
+  // }, [searchQuery]);
 
-  //   return () => {
-  //     document.removeEventListener("mousedown", handleClickOutSide);
-  //   };
-  // }, []);
-
-  // const handleClickOutSide = (event) => {
-  //   const { current: wrap } = wrapperRef;
-  //   if (wrap && !wrap.contains(event.length)) {
-  //     setIsAutocomplete(false);
-  //   }
+  // const fetchAutoCompleteResults = () => {
+  //   fetchDataFromApi(`auto-complete/?q=${searchQuery}`).then((res) => {
+  //     setResult(res?.results);
+  //   });
   // };
-
-  useEffect(() => {
-    document.getElementById("root").classList.remove("custom-h");
-    fetchAutoCompleteResults();
-  }, [searchQuery]);
-
-  const fetchAutoCompleteResults = () => {
-    fetchDataFromApi(`auto-complete/?q=${searchQuery}`).then((res) => {
-      setResult(res?.results);
-    });
-  };
 
   const navigate = useNavigate();
 
@@ -67,21 +52,21 @@ const Header = () => {
     setMobileMenu(!mobileMenu);
   };
 
-  useEffect(() => {
-    const listener = (e) => {
-      if (!wrapperRef.current.contains(e.target)) {
-        setShowAutocomplete(false);
-      }
-    };
+  // useEffect(() => {
+  //   const listener = (e) => {
+  //     if (!wrapperRef.current.contains(e.target)) {
+  //       setShowAutocomplete(false);
+  //     }
+  //   };
 
-    document.addEventListener("click", listener);
-    document.addEventListener("focusin", listener);
+  //   document.addEventListener("click", listener);
+  //   document.addEventListener("focusin", listener);
 
-    return () => {
-      document.removeEventListener("click", listener);
-      document.removeEventListener("focusin", listener);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("click", listener);
+  //     document.removeEventListener("focusin", listener);
+  //   };
+  // }, []);
 
   const { pathname } = useLocation();
   const pageName = pathname?.split("/")?.filter(Boolean)?.[0];
@@ -114,7 +99,7 @@ const Header = () => {
       </div>
       <div className="group flex items-center">
         <div
-          ref={wrapperRef}
+          // ref={wrapperRef}
           className="flex relative h-8 md:h-10 md:ml-10 md:pl-5 border border-[#303030] rounded-l-3xl group-focus-within:border-blue-500 md:group-focus-within:ml-5 md:group-focus-within:pl-0"
         >
           <div className="w-10 items-center justify-center hidden group-focus-within:md:flex">
@@ -125,19 +110,19 @@ const Header = () => {
             className="bg-transparent outline-none text-white pr-5 pl-5 md:pl-0 w-44 md:group-focus-within:pl-0 md:w-64 lg:w-[500px]"
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyUp={searchQueryHandler}
-            onFocus={() => setShowAutocomplete(true)}
+            // onFocus={() => setShowAutocomplete(true)}
             placeholder="Search"
             value={searchQuery}
             id="Enter"
           />
-          {showAutocomplete && (
+          {/* {showAutocomplete && (
             <ul className="absolute top-11 shadow-lg hover:shadow-xl grow w-full h-auto overflow-y-auto bg-white rounded-lg scrollbar-hide py-4">
               {result &&
                 result?.map((item, index) => {
                   return <AutoCompleteItem key={index} video={item} />;
                 })}
             </ul>
-          )}
+          )} */}
           <label
             htmlFor="Enter"
             className="w-10 flex items-center justify-center group-focus-within:md:flex text-white text-lg cursor-pointer"
