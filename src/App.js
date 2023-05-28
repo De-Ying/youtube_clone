@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { AppProvider } from "./context/contextApi";
 
@@ -7,8 +7,10 @@ import Header from "./components/Header";
 import Feed from "./components/Feed";
 import SearchResult from "./components/SearchResult";
 import VideoDetails from "./components/VideoDetails";
+import ChannelSwitch from "./components/Channels/ChannelSwitch";
 
 const App = () => {
+
     return (
         <AppProvider>
             <BrowserRouter>
@@ -21,6 +23,7 @@ const App = () => {
                             element={<SearchResult />}
                         />
                         <Route path="/video/:id" element={<VideoDetails />} />
+                        <Route path="/channel/:id?/:page?" element={<ChannelSwitch />} />
                     </Routes>
                 </div>
             </BrowserRouter>

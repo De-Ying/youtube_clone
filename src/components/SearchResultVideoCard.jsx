@@ -31,6 +31,7 @@ const SearchResultVideoCard = ({ video }) => {
                 <img
                   className="h-full w-full object-cover"
                   src={video?.author?.avatar[0]?.url}
+                  title={video?.author?.title}
                   alt=""
                 />
               </div>

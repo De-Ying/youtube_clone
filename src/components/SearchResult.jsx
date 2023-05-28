@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+  memo,
+} from "react";
 import { useParams } from "react-router-dom";
 
 import { fetchDataFromApi } from "../utils/api";
@@ -11,19 +17,19 @@ const SearchResult = () => {
   const { searchQuery } = useParams();
   const { setLoading } = useContext(AppContext);
 
-  useEffect(() => {
-    document.getElementById("root").classList.remove("custom-h");
-    fetchSearchResults();
-  }, [searchQuery]);
-
-  const fetchSearchResults = () => {
+  const fetchSearchResults = useCallback(() => {
     setLoading(true);
     fetchDataFromApi(`search/?q=${searchQuery}`).then((res) => {
       console.log(res);
       setResult(res?.contents);
       setLoading(false);
     });
-  };
+  }, [searchQuery]);
+
+  useEffect(() => {
+    document.getElementById("root").classList.remove("custom-h");
+    fetchSearchResults();
+  }, [searchQuery, fetchSearchResults]);
 
   return (
     <div className="flex flex-row h-[calc(100%-56px)]">
@@ -41,4 +47,4 @@ const SearchResult = () => {
   );
 };
 
-export default SearchResult;
+export default memo(SearchResult);

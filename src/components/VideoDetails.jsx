@@ -159,15 +159,17 @@ const VideoDetails = () => {
 
           <div className="flex justify-between flex-col md:flex-row mt-4">
             <div className="flex">
-              <div className="flex items-start">
-                <div className="flex h-11 w-11 rounded-full overflow-hidden">
-                  <img
-                    className="h-full w-full object-cover"
-                    src={video?.author?.avatar[0]?.url}
-                    alt=""
-                  />
+              <Link to={`/channel/${video?.author?.channelId}/home`}>
+                <div className="flex items-start">
+                  <div className="flex h-11 w-11 rounded-full overflow-hidden">
+                    <img
+                      className="h-full w-full object-cover"
+                      src={video?.author?.avatar[0]?.url}
+                      alt=""
+                    />
+                  </div>
                 </div>
-              </div>
+              </Link>
               <div className="flex flex-col ml-3">
                 <div className="text-white text-md font-semibold flex items-center">
                   {video?.author?.title}
@@ -433,7 +435,9 @@ const VideoDetails = () => {
                       </div>
                     </div>
 
-                    <div className="text-white">{item?.content}</div>
+                    <div className="text-white whitespace-pre-line">
+                      {item?.content}
+                    </div>
 
                     <div className="flex text-white mt-4 md:mt-0">
                       <div className="flex items-center justify-center h-11">

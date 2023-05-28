@@ -9,16 +9,17 @@ export const AppProvider = (props) => {
     const [selectedCategory, setSelectedCategory] = useState("New");
     const [mobileMenu, setMobileMenu] = useState(false);
 
-    const fetchSelectedCategoryData = useCallback((query) => {
+    const fetchSelectedCategoryData = useCallback(() => {
         setLoading(true);
-        fetchDataFromApi(`search/?q=${query}`).then(({ contents }) => {
+        fetchDataFromApi(`search/?q=${selectedCategory}`).then(({ contents }) => {
+            console.log(contents);
             setSearchResults(contents);
             setLoading(false);
         });
-    }, []);
+    }, [selectedCategory]);
 
     useEffect(() => {
-        fetchSelectedCategoryData(selectedCategory);
+        fetchSelectedCategoryData();
     }, [selectedCategory, fetchSelectedCategoryData]);
 
     return (
