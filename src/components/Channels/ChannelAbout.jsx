@@ -26,24 +26,26 @@ const ChannelAbout = ({ details }) => {
                 </td>
               </tr>
             )}
-
             <tr>
               <th className="pt-3">Location:</th>
               <td className="pt-3">{details?.country}</td>
             </tr>
           </table>
         </div>
-        <div className="mt-4 pb-6">
-          <span>Links</span>
-          <div className="mt-6">
-            {details?.links?.map((link, idx) => (
-              <Link to={link.targetUrl} key={idx} className="flex my-2 mr-4">
-                <img src={link.icon} alt="" className="mr-2 w-6" />
-                <span>{link.title}</span>
-              </Link>
-            ))}
+
+        {details?.links?.length > 0 && (
+          <div className="mt-4 pb-6">
+            <span>Links</span>
+            <div className="mt-6">
+              {details?.links?.map((link, idx) => (
+                <Link to={link.targetUrl} key={idx} className="flex my-2 mr-4">
+                  <img src={link.icon} alt="" className="mr-2 w-6" />
+                  <span>{link.title}</span>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="flex flex-col py-6 px-4 overflow-y-auto lg:w-[350px] xl:w-[400px]">
         <span className="border-b border-solid border-white/[0.4] pb-3">

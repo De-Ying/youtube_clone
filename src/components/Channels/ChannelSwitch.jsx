@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import React, { useState, useCallback, useEffect, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Box from "@mui/material/Box";
@@ -21,23 +21,39 @@ import LeftNav from "../LeftNav";
 import AbbreviateNumber from "../../shared/abbreviateNumber";
 
 import { fetchDataFromApi } from "../../utils/api";
+import { AppContext } from "../../context/contextApi";
 
 const ChannelSwitch = () => {
   let { page, id } = useParams();
   const navigate = useNavigate();
+  const { setLoading } = useContext(AppContext);
 
   const [channelDetails, setChannelDetails] = useState();
+  const [channelVideos, setChannelVideos] = useState([]);
 
   const fetchChannelDetail = useCallback(() => {
+    setLoading(true);
     fetchDataFromApi(`channel/details/?id=${id}`).then((res) => {
       console.log(res);
       setChannelDetails(res);
+      setLoading(false);
+    });
+  }, [id]);
+
+  const fetchChannelVideo = useCallback(() => {
+    setLoading(true);
+    fetchDataFromApi(`channel/videos/?id=${id}`).then(({ contents }) => {
+      console.log(contents);
+      setChannelVideos(contents);
+      setLoading(false);
     });
   }, [id]);
 
   useEffect(() => {
+    document.getElementById("root").classList.remove("custom-h");
     fetchChannelDetail();
-  }, [id, fetchChannelDetail]);
+    fetchChannelVideo();
+  }, [id, fetchChannelDetail, fetchChannelVideo]);
 
   const tabNameToIndex = {
     0: "home",
@@ -71,12 +87,12 @@ const ChannelSwitch = () => {
     <div className="flex flex-row h-[calc(100%-56px)]">
       <LeftNav />
       <div className="grow w-[calc(100%-240px)] h-full overflow-y-auto bg-black">
-        <div className="">
+        <div className="w-full">
           <div>
             <img src={channelDetails?.banner?.desktop[2]?.url} alt="" />
           </div>
           <div className="flex justify-between items-center mt-4">
-            <div className="flex w-11/12 m-auto justify-between">
+            <div className="flex w-10/12 m-auto justify-between">
               <div className="flex">
                 <div>
                   <img
@@ -124,8 +140,6 @@ const ChannelSwitch = () => {
                     </span>
                     <IoIosArrowForward />
                   </button>
-
-                  {/* </Link> */}
                 </div>
               </div>
 
@@ -136,7 +150,16 @@ const ChannelSwitch = () => {
           </div>
         </div>
         <div className="mt-4">
-          <Box sx={{ borderBottom: 1, borderColor: "rgb(255 255 255 / 0.2)" }}>
+          <Box
+            sx={{
+              borderBottom: 1,
+              borderColor: "rgb(255 255 255 / 0.2)",
+              position: "sticky",
+              top: 0,
+              zIndex: 999,
+              background: "#000",
+            }}
+          >
             <Tabs
               value={selectedTab}
               onChange={handleChange}
@@ -144,7 +167,7 @@ const ChannelSwitch = () => {
               scrollButtons
               allowScrollButtonsMobile
               aria-label="basic tabs example"
-              style={{ marginLeft: "12px" }}
+              style={{ width: "83%", margin: "auto" }}
             >
               <Tab label="Home" style={{ color: "rgb(255,255,255, 0.8)" }} />
               <Tab label="Video" style={{ color: "rgb(255,255,255, 0.8)" }} />
@@ -163,7 +186,7 @@ const ChannelSwitch = () => {
           </Box>
 
           {selectedTab === 0 && <ChannelDetails />}
-          {selectedTab === 1 && <ChannelVideos />}
+          {selectedTab === 1 && <ChannelVideos videos={channelVideos} />}
           {selectedTab === 2 && <ChannelPlaylists />}
           {selectedTab === 3 && <ChannelCommunity />}
           {selectedTab === 4 && <ChannelChannels />}
