@@ -18,3 +18,6 @@ export const fetchDataFromApi = async (url) => {
     return data;
 };
 
+// export const fetchDataMulFromApi = async (url) => {
+
+// }

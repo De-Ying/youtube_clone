@@ -32,6 +32,9 @@ const ChannelSwitch = () => {
   const [channelVideos, setChannelVideos] = useState([]);
   const [channelCommunity, setChannelCommunity] = useState([]);
 
+  const [channelCollection, setChannelCollection] = useState([]);
+  const [channelContentFilter, setChannelContentFilter] = useState([]);
+
   const fetchChannelDetail = useCallback(() => {
     setLoading(true);
     fetchDataFromApi(`channel/details/?id=${id}`).then((res) => {
@@ -59,12 +62,34 @@ const ChannelSwitch = () => {
     });
   }, [id]);
 
+  const fetchChannelChannels = useCallback(() => {
+    setLoading(true);
+    fetchDataFromApi(`channel/channels/?id=${id}`).then(({ collections }) => {
+      setChannelCollection(collections);
+      collections.forEach((collection) => {
+        fetchDataFromApi(
+          `channel/channels/?id=${id}&filter=${collection?.filter}`
+        ).then(({ contents }) => {
+          setChannelContentFilter(contents);
+        });
+      });
+      setLoading(false);
+    });
+  }, [id]);
+
   useEffect(() => {
     document.getElementById("root").classList.remove("custom-h");
     fetchChannelDetail();
     fetchChannelVideo();
     fetchChannelCommunity();
-  }, [id, fetchChannelDetail, fetchChannelVideo, fetchChannelCommunity]);
+    fetchChannelChannels();
+  }, [
+    id,
+    fetchChannelDetail,
+    fetchChannelVideo,
+    fetchChannelCommunity,
+    fetchChannelChannels,
+  ]);
 
   const tabNameToIndex = {
     0: "home",
@@ -202,7 +227,12 @@ const ChannelSwitch = () => {
           {selectedTab === 3 && (
             <ChannelCommunity communities={channelCommunity} />
           )}
-          {selectedTab === 4 && <ChannelChannels />}
+          {selectedTab === 4 && (
+            <ChannelChannels
+              channels={channelCollection}
+              channelFilters={channelContentFilter}
+            />
+          )}
           {selectedTab === 5 && <ChannelAbout details={channelDetails} />}
           {selectedTab === 6 && <ChannelSearch />}
         </div>

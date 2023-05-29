@@ -6,7 +6,7 @@ const AbbreviateNumber = ({ children }) => {
     children < 1000
       ? abbreviateNumber(children, 1)
       : abbreviateNumber(children, 2);
-  return <div className="mr-1">{text}</div>;
+  return <span className="mr-1">{text}</span>;
 };
 
 export default AbbreviateNumber;

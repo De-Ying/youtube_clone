@@ -1,5 +1,5 @@
 import React from "react";
-import { abbreviateNumber } from "js-abbreviation-number";
+import AbbreviateNumber from "../shared/abbreviateNumber";
 import { Link } from "react-router-dom";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { IoMdMusicalNote } from "react-icons/io";
@@ -42,7 +42,7 @@ const VideoCard = ({ video }) => {
               )}
             </span>
             <div className="flex text-[12px] font-semibold text-white/[0.7] truncate overflow-hidden">
-              <span>{`${abbreviateNumber(video?.stats?.views, 2)} views`}</span>
+              <AbbreviateNumber>{video?.stats?.views}</AbbreviateNumber> views
               <span className="flex text-[24px] leading-none font-bold text-white/[0.7] relative top-[-10px] mx-1">
                 .
               </span>
