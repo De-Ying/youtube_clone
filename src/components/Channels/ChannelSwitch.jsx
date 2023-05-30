@@ -20,7 +20,6 @@ import ChannelPlaylists from "./ChannelPlaylists";
 import ChannelCommunity from "./ChannelCommunity";
 import ChannelChannels from "./ChannelChannels";
 import ChannelAbout from "./ChannelAbout";
-import ChannelSearch from "./ChannelSearch";
 
 import LeftNav from "../LeftNav";
 
@@ -38,14 +37,11 @@ const ChannelSwitch = () => {
   const [channelVideos, setChannelVideos] = useState([]);
   const [channelCommunity, setChannelCommunity] = useState([]);
 
-  const [channelCollection, setChannelCollection] = useState([]);
-  const [channelContentFilter, setChannelContentFilter] = useState([]);
   const [data, setData] = useState({ subscriptions: [], channels: [] });
 
   const fetchChannelDetail = useCallback(() => {
     setLoading(true);
     fetchDataFromApi(`channel/details/?id=${id}`).then((res) => {
-      console.log(res);
       setChannelDetails(res);
       setLoading(false);
     });
@@ -54,7 +50,6 @@ const ChannelSwitch = () => {
   const fetchChannelVideo = useCallback(() => {
     setLoading(true);
     fetchDataFromApi(`channel/videos/?id=${id}`).then(({ contents }) => {
-      console.log(contents);
       setChannelVideos(contents);
       setLoading(false);
     });
@@ -63,43 +58,25 @@ const ChannelSwitch = () => {
   const fetchChannelCommunity = useCallback(() => {
     setLoading(true);
     fetchDataFromApi(`channel/community/?id=${id}`).then(({ contents }) => {
-      console.log(contents);
       setChannelCommunity(contents);
-      setLoading(false);
-    });
-  }, [id]);
-
-  const fetchChannelChannels = useCallback(() => {
-    setLoading(true);
-    fetchDataFromApi(`channel/channels/?id=${id}`).then(({ collections }) => {
-      setChannelCollection(collections);
-
-      collections.forEach((collection, idx) => {
-        fetchDataFromApi(
-          `channel/channels/?id=${id}&filter=${collection?.filter}`
-        ).then(({ contents }) => {
-          console.log(contents);
-          setChannelContentFilter(contents);
-        });
-      });
       setLoading(false);
     });
   }, [id]);
 
   const fetchData = useCallback(async () => {
     try {
-      const apiUrl1 = `https://youtube138.p.rapidapi.com/channel/channels/?id=${id}`;
-      const response1 = await fetch(apiUrl1, {
+      const options = {
         headers: {
           "X-RapidAPI-Key":
             process.env.REACT_APP_YOUTUBE_API_KEY || "YOUR_API_KEY",
           "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
         },
-      });
+      };
 
+      const apiUrl1 = `https://youtube138.p.rapidapi.com/channel/channels/?id=${id}`;
+
+      const response1 = await fetch(apiUrl1, options);
       const responseData1 = await response1.json();
-
-      console.log(responseData1.collections);
 
       const apiUrls = [];
       const responseData1Length = responseData1.collections.length;
@@ -115,13 +92,7 @@ const ChannelSwitch = () => {
 
       for (let i = 0; i < apiUrls.length; i++) {
         const apiUrl = apiUrls[i];
-        const response = await fetch(apiUrl, {
-          headers: {
-            "X-RapidAPI-Key":
-              process.env.REACT_APP_YOUTUBE_API_KEY || "YOUR_API_KEY",
-            "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
-          },
-        });
+        const response = await fetch(apiUrl, options);
 
         const responseData = await response.json();
 
@@ -139,21 +110,17 @@ const ChannelSwitch = () => {
   }, [id]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  useEffect(() => {
     document.getElementById("root").classList.remove("custom-h");
     fetchChannelDetail();
     fetchChannelVideo();
     fetchChannelCommunity();
-    fetchChannelChannels();
+    fetchData();
   }, [
     id,
     fetchChannelDetail,
     fetchChannelVideo,
     fetchChannelCommunity,
-    fetchChannelChannels,
+    fetchData,
   ]);
 
   const tabNameToIndex = {
@@ -163,7 +130,6 @@ const ChannelSwitch = () => {
     3: "community",
     4: "channels",
     5: "about",
-    6: "search",
   };
 
   const indexToTabName = {
@@ -173,18 +139,19 @@ const ChannelSwitch = () => {
     community: 3,
     channels: 4,
     about: 5,
-    search: 6,
   };
 
   const [selectedTab, setSelectedTab] = useState(indexToTabName[page]);
-  console.log(selectedTab);
 
   const handleChange = (event, newValue) => {
     navigate(`/channel/${id}/${tabNameToIndex[newValue]}`);
     setSelectedTab(newValue);
   };
 
-  console.log(data);
+  const handleClick = () => {
+    navigate(`/channel/${id}/${tabNameToIndex[5]}`);
+    setSelectedTab(5);
+  };
 
   return (
     <div className="flex flex-row h-[calc(100%-56px)]">
@@ -234,10 +201,7 @@ const ChannelSwitch = () => {
                       videos
                     </span>
                   </div>
-                  <button
-                    className="flex items-center"
-                    onClick={() => setSelectedTab(5)}
-                  >
+                  <button className="flex items-center" onClick={handleClick}>
                     <span className="mr-2 text-white/[0.7]">
                       Learn more about this channel
                     </span>
@@ -259,7 +223,7 @@ const ChannelSwitch = () => {
               borderColor: "rgb(255 255 255 / 0.2)",
               position: "sticky",
               top: 0,
-              zIndex: 999,
+              zIndex: 1,
               background: "#000",
             }}
           >
@@ -272,33 +236,38 @@ const ChannelSwitch = () => {
               aria-label="basic tabs example"
               style={{ width: "83%", margin: "auto" }}
             >
-              <Tab label="Home" style={{ color: "rgb(255,255,255, 0.8)" }} />
+              <Tab
+                label="Home"
+                style={{ color: "rgb(255,255,255, 0.8)", marginRight: "24px" }}
+              />
               <Tab label="Video" style={{ color: "rgb(255,255,255, 0.8)" }} />
               <Tab
                 label="Playlist"
-                style={{ color: "rgb(255,255,255, 0.8)" }}
+                style={{ color: "rgb(255,255,255, 0.8)", margin: "0 24px" }}
               />
               <Tab
                 label="Community"
-                style={{ color: "rgb(255,255,255, 0.8)" }}
+                style={{ color: "rgb(255,255,255, 0.8)", margin: "0 24px" }}
               />
-              <Tab label="Channel" style={{ color: "rgb(255,255,255, 0.8)" }} />
-              <Tab label="About" style={{ color: "rgb(255,255,255, 0.8)" }} />
-              <Tab label="Search" style={{ color: "rgb(255,255,255, 0.8)" }} />
+              <Tab
+                label="Channel"
+                style={{ color: "rgb(255,255,255, 0.8)", margin: "0 24px" }}
+              />
+              <Tab
+                label="About"
+                style={{ color: "rgb(255,255,255, 0.8)", margin: "0 24px" }}
+              />
             </Tabs>
           </Box>
 
           {selectedTab === 0 && <ChannelDetails />}
           {selectedTab === 1 && <ChannelVideos videos={channelVideos} />}
-          {selectedTab === 2 && <ChannelPlaylists />}
+          {selectedTab === 2 && <ChannelPlaylists id={id} />}
           {selectedTab === 3 && (
             <ChannelCommunity communities={channelCommunity} />
           )}
-          {selectedTab === 4 && (
-            <ChannelChannels channels={channelCollection} data={data} />
-          )}
+          {selectedTab === 4 && <ChannelChannels data={data} />}
           {selectedTab === 5 && <ChannelAbout details={channelDetails} />}
-          {selectedTab === 6 && <ChannelSearch />}
         </div>
       </div>
     </div>

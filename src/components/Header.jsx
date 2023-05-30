@@ -29,7 +29,9 @@ const Header = () => {
   const [result, setResult] = useState();
   const [showAutocomplete, setShowAutocomplete] = useState(false);
 
-  const { loading, mobileMenu, setMobileMenu } = useContext(AppContext);
+  const { loading, mobileMenu, setLoading, setMobileMenu } = useContext(
+    AppContext
+  );
 
   const wrapperRef = useRef();
   const navigate = useNavigate();
@@ -38,9 +40,10 @@ const Header = () => {
   const pageName = pathname?.split("/")?.filter(Boolean)?.[0];
 
   const fetchAutoCompleteResults = useCallback(() => {
+    setLoading(true);
     fetchDataFromApi(`auto-complete/?q=${searchQuery}`).then((res) => {
-      console.log(res);
       setResult(res?.results);
+      setLoading(false);
     });
   }, [searchQuery]);
 

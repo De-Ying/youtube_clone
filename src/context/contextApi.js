@@ -12,7 +12,6 @@ export const AppProvider = (props) => {
     const fetchSelectedCategoryData = useCallback(() => {
         setLoading(true);
         fetchDataFromApi(`search/?q=${selectedCategory}`).then(({ contents }) => {
-            console.log(contents);
             setSearchResults(contents);
             setLoading(false);
         });

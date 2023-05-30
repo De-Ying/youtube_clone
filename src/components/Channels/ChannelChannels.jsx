@@ -29,10 +29,6 @@ const ChannelChannels = ({ channels, data }) => (
     ) : (
       <div></div>
     )}
-
-    {/* {data?.subscriptions?.length === 0 && data?.channels?.length === 0 && (
-      <div>Hello</div>
-    )} */}
   </div>
 );
 

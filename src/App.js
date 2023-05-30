@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { AppProvider } from "./context/contextApi";
 
@@ -23,7 +23,7 @@ const App = () => {
                             element={<SearchResult />}
                         />
                         <Route path="/video/:id" element={<VideoDetails />} />
-                        <Route path="/channel/:id?/:page?" element={<ChannelSwitch />} />
+                        <Route path="/channel/:id?/:page?/:searchChannelQuery?" element={<ChannelSwitch />} />
                     </Routes>
                 </div>
             </BrowserRouter>
