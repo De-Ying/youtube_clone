@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useContext } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useContext,
+  memo,
+} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
@@ -34,6 +40,7 @@ const ChannelSwitch = () => {
 
   const [channelCollection, setChannelCollection] = useState([]);
   const [channelContentFilter, setChannelContentFilter] = useState([]);
+  const [data, setData] = useState({ subscriptions: [], channels: [] });
 
   const fetchChannelDetail = useCallback(() => {
     setLoading(true);
@@ -66,16 +73,74 @@ const ChannelSwitch = () => {
     setLoading(true);
     fetchDataFromApi(`channel/channels/?id=${id}`).then(({ collections }) => {
       setChannelCollection(collections);
-      collections.forEach((collection) => {
+
+      collections.forEach((collection, idx) => {
         fetchDataFromApi(
           `channel/channels/?id=${id}&filter=${collection?.filter}`
         ).then(({ contents }) => {
+          console.log(contents);
           setChannelContentFilter(contents);
         });
       });
       setLoading(false);
     });
   }, [id]);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const apiUrl1 = `https://youtube138.p.rapidapi.com/channel/channels/?id=${id}`;
+      const response1 = await fetch(apiUrl1, {
+        headers: {
+          "X-RapidAPI-Key":
+            process.env.REACT_APP_YOUTUBE_API_KEY || "YOUR_API_KEY",
+          "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
+        },
+      });
+
+      const responseData1 = await response1.json();
+
+      console.log(responseData1.collections);
+
+      const apiUrls = [];
+      const responseData1Length = responseData1.collections.length;
+
+      for (let i = 0; i < responseData1Length; i++) {
+        const dataIU = responseData1.collections[i].filter;
+        const urlFake = `https://youtube138.p.rapidapi.com/channel/channels/?id=${id}&filter=${dataIU}`;
+        apiUrls.push(urlFake);
+      }
+
+      const responseData2 = [];
+      const responseData3 = [];
+
+      for (let i = 0; i < apiUrls.length; i++) {
+        const apiUrl = apiUrls[i];
+        const response = await fetch(apiUrl, {
+          headers: {
+            "X-RapidAPI-Key":
+              process.env.REACT_APP_YOUTUBE_API_KEY || "YOUR_API_KEY",
+            "X-RapidAPI-Host": "youtube138.p.rapidapi.com",
+          },
+        });
+
+        const responseData = await response.json();
+
+        if (i === 0) {
+          responseData2.push(responseData);
+        } else if (i === 1) {
+          responseData3.push(responseData);
+        }
+      }
+
+      setData({ subscriptions: responseData2, channels: responseData3 });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   useEffect(() => {
     document.getElementById("root").classList.remove("custom-h");
@@ -118,6 +183,8 @@ const ChannelSwitch = () => {
     navigate(`/channel/${id}/${tabNameToIndex[newValue]}`);
     setSelectedTab(newValue);
   };
+
+  console.log(data);
 
   return (
     <div className="flex flex-row h-[calc(100%-56px)]">
@@ -228,10 +295,7 @@ const ChannelSwitch = () => {
             <ChannelCommunity communities={channelCommunity} />
           )}
           {selectedTab === 4 && (
-            <ChannelChannels
-              channels={channelCollection}
-              channelFilters={channelContentFilter}
-            />
+            <ChannelChannels channels={channelCollection} data={data} />
           )}
           {selectedTab === 5 && <ChannelAbout details={channelDetails} />}
           {selectedTab === 6 && <ChannelSearch />}
@@ -241,4 +305,4 @@ const ChannelSwitch = () => {
   );
 };
 
-export default ChannelSwitch;
+export default memo(ChannelSwitch);
