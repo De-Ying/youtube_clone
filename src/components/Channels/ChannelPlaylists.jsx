@@ -23,12 +23,12 @@ const ChannelPlaylists = ({ id }) => {
         setLoading(false);
       }
     );
-  }, [id]);
+  }, [id, selectedItem]);
 
   useEffect(() => {
     document.getElementById("root").classList.remove("custom-h");
     fetchChannelPlayList();
-  }, [id, fetchChannelPlayList]);
+  }, [id, selectedItem, fetchChannelPlayList]);
 
   console.log(channelPlayLists);
 

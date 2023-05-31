@@ -11,7 +11,7 @@ const ChannelPlaylistsCard = ({ playlist }) => {
           src={playlist?.thumbnails[0]?.url}
           alt=""
         />
-        <div className="absolute text-white flex justify-between items-center bottom-2 w-full px-3 bg-[#008b8b] opacity-70 ">
+        <div className="absolute text-white flex justify-between items-center bottom-0 w-full px-3 bg-[#008b8b] opacity-70 ">
           <span className="text-2xl">
             <MdPlaylistPlay />
           </span>
@@ -29,7 +29,10 @@ const ChannelPlaylistsCard = ({ playlist }) => {
               {playlist?.updatedTimeText}
             </span>
           )}
-          <Link className="text-base text-white/[0.6] hover:text-white/[0.8]">
+          <Link
+            to={`/playlist/${playlist?.playlistId}`}
+            className="text-base text-white/[0.6] hover:text-white/[0.8]"
+          >
             See the full list
           </Link>
         </div>

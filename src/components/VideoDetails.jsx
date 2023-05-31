@@ -293,7 +293,7 @@ const VideoDetails = () => {
           <div className="text-white text-base mt-4 flex items-center">
             <AbbreviateNumber>{comment?.totalCommentsCount}</AbbreviateNumber>
             Comment
-            <div className="relative flex flex-col items-center w-auto h-auto rounded-lg">
+            <div className="relative flex flex-col items-baseline w-auto h-auto rounded-lg ml-4 px-4 ">
               <button
                 onClick={() => setIsOpen((prev) => !prev)}
                 className="w-full flex items-center px-3 mx-1 justify-between font-bold text-base rounded-lg tracking-wider border-1 border-white active:border-[#2f4f4f] duration-300 active:text-[#dcdcdc]"
@@ -308,8 +308,11 @@ const VideoDetails = () => {
 
               {isOpen && (
                 <div className="bg-black/[0.7] absolute top-10 flex flex-col items-start rounded-lg p-2 w-full">
-                  {comment?.filters.map((item) => (
-                    <div className="flex w-full justify-between hover:bg-[#696969] hover:pl-2 cursor-pointer rounded-r-lg border-l-transparent hover:border-l-white border-l-4">
+                  {comment?.filters.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex w-full justify-between hover:bg-[#696969] hover:pl-2 cursor-pointer rounded-r-lg border-l-transparent hover:border-l-white border-l-4"
+                    >
                       <h3 className="py-2">{item.title}</h3>
                     </div>
                   ))}

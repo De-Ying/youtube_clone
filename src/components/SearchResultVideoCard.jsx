@@ -7,7 +7,6 @@ import { IoMdMusicalNote } from "react-icons/io";
 import VideoLength from "../shared/videoLength";
 
 const SearchResultVideoCard = ({ video }) => {
-  console.log(video);
   return (
     <Link to={`/video/${video?.videoId}`}>
       <div className="flex flex-col md:flex-row mb-8 md:mb-3 lg:hover:bg-white/[0.1] rounded-xl md:p-4">

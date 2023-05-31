@@ -8,6 +8,7 @@ import Feed from "./components/Feed";
 import SearchResult from "./components/SearchResult";
 import VideoDetails from "./components/VideoDetails";
 import ChannelSwitch from "./components/Channels/ChannelSwitch";
+import PlaylistDetails from "./components/PlaylistDetails";
 
 const App = () => {
 
@@ -22,8 +23,9 @@ const App = () => {
                             path="/searchResult/:searchQuery"
                             element={<SearchResult />}
                         />
-                        <Route path="/video/:id" element={<VideoDetails />} />
+                        <Route path="/video/:id?/:playlistId?/:index?" element={<VideoDetails />} />
                         <Route path="/channel/:id?/:page?/:searchChannelQuery?" element={<ChannelSwitch />} />
+                        <Route path="/playlist/:id" element={<PlaylistDetails />} />
                     </Routes>
                 </div>
             </BrowserRouter>
