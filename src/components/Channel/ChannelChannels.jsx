@@ -1,6 +1,6 @@
 import ChannelChannelsCard from "./ChannelChannelsCard";
 
-const ChannelChannels = ({ channels, data }) => (
+const ChannelChannels = ({ data }) => (
   <div className="grow w-[calc(100%-240px)] h-full overflow-y-auto bg-black m-auto">
     {data?.subscriptions?.length > 0 ? (
       <div>

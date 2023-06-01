@@ -7,7 +7,7 @@ const AutoCompleteItem = ({ video }) => {
     <li className="hover:bg-[#dedede]/[0.6]">
       <Link
         to={`/searchResult/${video}`}
-        className="flex items-center mx-3 py-2"
+        className="flex items-center mx-4 py-2"
       >
         <span className="mr-2">
           <IoIosSearch className="text-black text-xl" />

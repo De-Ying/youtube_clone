@@ -5,9 +5,7 @@ import { MdOutlineComment } from "react-icons/md";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { IoMdMusicalNote } from "react-icons/io";
 
-import AbbreviateNumber from "../../shared/abbreviateNumber";
-import Expandable from "../../shared/expandable";
-import VideoLength from "../../shared/videoLength";
+import { AbbreviateNumber, Expandable, VideoLength } from "../../shared";
 
 const ChannelCommunityCard = ({ community }) => {
   return (
@@ -74,11 +72,10 @@ const ChannelCommunityCard = ({ community }) => {
                       )}
                     </span>
                     <div className="flex text-[12px] font-semibold text-black/[0.7] truncate overflow-hidden">
-                      <AbbreviateNumber>
+                      <AbbreviateNumber type="Views">
                         {community?.attachment?.video?.stats?.views}
-                      </AbbreviateNumber>{" "}
-                      Views
-                      <span className="flex text-[24px] leading-none font-bold text-black/[0.7] relative top-[-10px] mx-1">
+                      </AbbreviateNumber>
+                      <span className="flex text-[24px] leading-none font-bold text-black/[0.7] relative top-[-10px] mr-2">
                         .
                       </span>
                       <span className="truncate">

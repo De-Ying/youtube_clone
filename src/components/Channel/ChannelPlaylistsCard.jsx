@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { MdPlaylistPlay } from "react-icons/md";
+import { BsPlay } from "react-icons/bs";
 
 const ChannelPlaylistsCard = ({ playlist }) => {
   return (
@@ -16,6 +17,12 @@ const ChannelPlaylistsCard = ({ playlist }) => {
             <MdPlaylistPlay />
           </span>
           <span className="text-base">{playlist?.stats?.videos} video</span>
+        </div>
+        <div className="absolute h-full w-full bg-black/[0.6] flex items-center justify-center -bottom-10 hover:bottom-0 opacity-0 hover:opacity-100 transition-all duration-300">
+          <Link className="flex items-center text-white uppercase">
+            <BsPlay className="text-3xl" />
+            <span>Play All</span>
+          </Link>
         </div>
       </div>
 

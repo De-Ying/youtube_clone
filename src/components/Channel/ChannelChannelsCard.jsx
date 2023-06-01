@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const ChannelChannelsCard = ({ channel }) => {
-  console.log(channel);
+  // console.log(channel);
+
   return (
     <div className="my-4">
       <Link

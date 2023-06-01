@@ -31,3 +31,21 @@ export const categories = [
     { name: "Help", icon: <FiHelpCircle />, type: "menu" },
     { name: "Send feedback", icon: <RiFeedbackLine />, type: "menu" },
 ];
+
+export const tabNameToIndex = {
+    0: "home",
+    1: "videos",
+    2: "playlists",
+    3: "community",
+    4: "channels",
+    5: "about",
+  };
+
+export const indexToTabName = {
+    home: 0,
+    videos: 1,
+    playlists: 2,
+    community: 3,
+    channels: 4,
+    about: 5,
+};

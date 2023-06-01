@@ -7,9 +7,10 @@ import React, {
 } from "react";
 import { useParams } from "react-router-dom";
 
-import { fetchDataFromApi } from "../utils/api";
-import { AppContext } from "../context/contextApi";
-import LeftNav from "./LeftNav";
+import { fetchDataFromApi } from "../../utils/api";
+import { AppContext } from "../../context/contextApi";
+
+import { LeftNav } from "../";
 import SearchResultVideoCard from "./SearchResultVideoCard";
 
 const SearchResult = () => {
@@ -19,9 +20,9 @@ const SearchResult = () => {
 
   const fetchSearchResults = useCallback(() => {
     setLoading(true);
-    fetchDataFromApi(`search/?q=${searchQuery}`).then((res) => {
-      console.log(res);
-      setResult(res?.contents);
+    fetchDataFromApi(`search/?q=${searchQuery}`).then(({ contents }) => {
+      // console.log(contents);
+      setResult(contents);
       setLoading(false);
     });
   }, [searchQuery]);

@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 
-import AbbreviateNumber from "../../shared/abbreviateNumber";
+import { AbbreviateNumber } from "../../shared";
 import { BsFlag } from "react-icons/bs";
 import { BsShare } from "react-icons/bs";
 
 const ChannelAbout = ({ details }) => {
-  console.log(details);
+  // console.log(details);
+
   return (
     <div className="flex w-11/12 m-auto mt-4 text-white flex-col lg:flex-row">
       <div className="flex flex-col lg:w-[calc(100%-350px)] xl:w-[calc(100%-400px)] px-4 py-3 lg:py-6">
@@ -55,7 +56,9 @@ const ChannelAbout = ({ details }) => {
           {details?.joinedDateText}
         </span>
         <span className="flex border-b border-solid border-white/[0.4] py-3">
-          <AbbreviateNumber>{details?.stats?.views}</AbbreviateNumber> Views
+          <AbbreviateNumber type="Views">
+            {details?.stats?.views}
+          </AbbreviateNumber>
         </span>
         <span className="flex py-3">
           <Link className="text-lg mr-16">

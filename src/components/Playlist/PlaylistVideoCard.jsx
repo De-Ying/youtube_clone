@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import VideoLength from "../shared/videoLength";
+import { VideoLength } from "../../shared/";
 
 const PlaylistVideoCard = ({ video: { index, video }, playlistId }) => {
-  console.log(video);
   return (
     <Link to={`/video/${video?.videoId}/${playlistId}/${index}`}>
       <div className="flex flex-col md:flex-row mb-8 md:mb-3 lg:hover:bg-white/[0.1] rounded-xl md:p-4">

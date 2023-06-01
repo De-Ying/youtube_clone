@@ -1,7 +1,8 @@
 import ChannelCommunityCard from "./ChannelCommunityCard";
 
 const ChannelCommunity = ({ communities }) => {
-  console.log(communities);
+  // console.log(communities);
+
   return (
     <div className="mt-8 grow w-[calc(100%-240px)] h-full overflow-y-auto bg-black m-auto">
       {communities.length === 0 && (

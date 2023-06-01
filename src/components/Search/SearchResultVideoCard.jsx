@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { abbreviateNumber } from "js-abbreviation-number";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { IoMdMusicalNote } from "react-icons/io";
 
-import VideoLength from "../shared/videoLength";
+import { VideoLength, AbbreviateNumber } from "../../shared/";
 
 const SearchResultVideoCard = ({ video }) => {
   return (
@@ -48,11 +47,10 @@ const SearchResultVideoCard = ({ video }) => {
                 )}
               </span>
               <div className="flex text-sm font-semibold text-white/[0.7] truncate overflow-hidden">
-                <span>{`${abbreviateNumber(
-                  video?.stats?.views,
-                  2
-                )} views`}</span>
-                <span className="flex text-[24px] leading-none font-bold text-white/[0.7] relative top-[-10px] mx-1">
+                <AbbreviateNumber type="views">
+                  {video?.stats?.views}
+                </AbbreviateNumber>
+                <span className="flex text-[24px] leading-none font-bold text-white/[0.7] relative top-[-10px] mr-1">
                   .
                 </span>
                 <span className="truncate">{video?.publishedTimeText}</span>

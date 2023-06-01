@@ -1,12 +1,11 @@
 import React from "react";
-import AbbreviateNumber from "../shared/abbreviateNumber";
 import { Link } from "react-router-dom";
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { IoMdMusicalNote } from "react-icons/io";
 
-import VideoLength from "../shared/videoLength";
+import { VideoLength, AbbreviateNumber } from "../../shared/";
 
-const VideoCard = ({ video }) => {
+const ChannelVideoCard = ({ video }) => {
   return (
     <Link to={`/video/${video?.videoId}`}>
       <div className="flex flex-col mb-8">
@@ -19,15 +18,6 @@ const VideoCard = ({ video }) => {
           {video?.lengthSeconds && <VideoLength time={video?.lengthSeconds} />}
         </div>
         <div className="flex text-white mt-3">
-          <div className="flex items-start">
-            <div className="flex h-9 w-9 rounded-full overflow-hidden">
-              <img
-                className="h-full w-full object-cover"
-                src={video?.author?.avatar[0]?.url}
-                alt=""
-              />
-            </div>
-          </div>
           <div className="flex flex-col ml-3 overflow-hidden">
             <span className="text-sm font-bold line-clamp-2">
               {video?.title}
@@ -42,8 +32,10 @@ const VideoCard = ({ video }) => {
               )}
             </span>
             <div className="flex text-[12px] font-semibold text-white/[0.7] truncate overflow-hidden">
-              <AbbreviateNumber>{video?.stats?.views}</AbbreviateNumber> views
-              <span className="flex text-[24px] leading-none font-bold text-white/[0.7] relative top-[-10px] mx-1">
+              <AbbreviateNumber type="views">
+                {video?.stats?.views}
+              </AbbreviateNumber>
+              <span className="flex text-[24px] leading-none font-bold text-white/[0.7] relative top-[-12px] mr-2">
                 .
               </span>
               <span className="truncate">{video?.publishedTimeText}</span>
@@ -55,4 +47,4 @@ const VideoCard = ({ video }) => {
   );
 };
 
-export default VideoCard;
+export default ChannelVideoCard;

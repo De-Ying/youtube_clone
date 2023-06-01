@@ -30,8 +30,6 @@ const ChannelPlaylists = ({ id }) => {
     fetchChannelPlayList();
   }, [id, selectedItem, fetchChannelPlayList]);
 
-  console.log(channelPlayLists);
-
   return (
     <div className="mt-8 grow w-[calc(100%-240px)] h-full overflow-y-auto bg-black m-auto">
       <div className="flex justify-between items-center">

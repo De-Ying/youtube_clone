@@ -11,8 +11,7 @@ import Tabs from "@mui/material/Tabs";
 import Box from "@mui/material/Box";
 
 import { BsFillCheckCircleFill } from "react-icons/bs";
-import { IoMdMusicalNote } from "react-icons/io";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoMdMusicalNote, IoIosArrowForward } from "react-icons/io";
 
 import ChannelDetails from "./ChannelDetails";
 import ChannelVideos from "./ChannelVideos";
@@ -21,9 +20,10 @@ import ChannelCommunity from "./ChannelCommunity";
 import ChannelChannels from "./ChannelChannels";
 import ChannelAbout from "./ChannelAbout";
 
-import LeftNav from "../LeftNav";
+import { LeftNav } from "../";
+import { tabNameToIndex, indexToTabName } from "../../utils/constants";
 
-import AbbreviateNumber from "../../shared/abbreviateNumber";
+import { AbbreviateNumber } from "../../shared/";
 
 import { fetchDataFromApi } from "../../utils/api";
 import { AppContext } from "../../context/contextApi";
@@ -123,24 +123,6 @@ const ChannelSwitch = () => {
     fetchData,
   ]);
 
-  const tabNameToIndex = {
-    0: "home",
-    1: "videos",
-    2: "playlists",
-    3: "community",
-    4: "channels",
-    5: "about",
-  };
-
-  const indexToTabName = {
-    home: 0,
-    videos: 1,
-    playlists: 2,
-    community: 3,
-    channels: 4,
-    about: 5,
-  };
-
   const [selectedTab, setSelectedTab] = useState(indexToTabName[page]);
 
   const handleChange = (event, newValue) => {
@@ -159,18 +141,20 @@ const ChannelSwitch = () => {
       <div className="grow w-[calc(100%-240px)] h-full overflow-y-auto bg-black">
         <div className="w-full">
           <div>
-            <img src={channelDetails?.banner?.desktop[2]?.url} alt="" />
+            <img
+              src={channelDetails?.banner?.desktop[0]?.url}
+              alt=""
+              className="w-full"
+            />
           </div>
           <div className="flex justify-between items-center mt-4">
             <div className="flex w-10/12 m-auto justify-between">
               <div className="flex">
                 <div>
                   <img
-                    src={channelDetails?.avatar[2]?.url}
+                    src={channelDetails?.avatar[0]?.url}
                     alt=""
-                    width={channelDetails?.avatar[2]?.width}
-                    height={channelDetails?.avatar[2]?.height}
-                    className="rounded-full"
+                    className="rounded-full w-20"
                   />
                 </div>
                 <div className="text-white ml-7 flex flex-col justify-center leading-loose">
@@ -189,16 +173,14 @@ const ChannelSwitch = () => {
                       {channelDetails?.username}
                     </span>
                     <span className="mr-4 flex text-white/[0.7]">
-                      <AbbreviateNumber>
+                      <AbbreviateNumber type="subscribers">
                         {channelDetails?.stats?.subscribers}
-                      </AbbreviateNumber>{" "}
-                      subscribers
+                      </AbbreviateNumber>
                     </span>
                     <span className="mr-4 flex text-white/[0.7]">
-                      <AbbreviateNumber>
+                      <AbbreviateNumber type="videos">
                         {channelDetails?.stats?.videos}
                       </AbbreviateNumber>
-                      videos
                     </span>
                   </div>
                   <button className="flex items-center" onClick={handleClick}>

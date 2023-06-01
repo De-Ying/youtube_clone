@@ -2,13 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { AppProvider } from "./context/contextApi";
-
-import Header from "./components/Header";
-import Feed from "./components/Feed";
-import SearchResult from "./components/SearchResult";
-import VideoDetails from "./components/VideoDetails";
-import ChannelSwitch from "./components/Channels/ChannelSwitch";
-import PlaylistDetails from "./components/PlaylistDetails";
+import { Header, Feed, SearchResult, VideoDetails, ChannelSwitch, PlaylistDetails } from './components';
 
 const App = () => {
 

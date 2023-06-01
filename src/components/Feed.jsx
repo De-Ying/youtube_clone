@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react";
 
 import { AppContext } from "../context/contextApi";
-import LeftNav from "./LeftNav";
-import VideoCard from "./VideoCard";
+import { LeftNav } from "./";
+import VideoCard from "./Video/VideoCard";
 
 const Feed = () => {
   const { loading, searchResults } = useContext(AppContext);

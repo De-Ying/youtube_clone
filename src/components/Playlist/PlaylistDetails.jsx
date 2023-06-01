@@ -7,30 +7,30 @@ import React, {
 } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import LeftNav from "./LeftNav";
-
 import { MdPlaylistAdd } from "react-icons/md";
 import { TbShare3, TbArrowsShuffle } from "react-icons/tb";
 import { RxDotsVertical } from "react-icons/rx";
 import { BsFillPlayFill } from "react-icons/bs";
 
-import AbbreviateNumber from "../shared/abbreviateNumber";
+import { AbbreviateNumber } from "../../shared/";
 
-import { fetchDataFromApi } from "../utils/api";
-import { AppContext } from "../context/contextApi";
+import { fetchDataFromApi } from "../../utils/api";
+import { AppContext } from "../../context/contextApi";
+
 import PlaylistVideoCard from "./PlaylistVideoCard";
+import { LeftNav } from "../";
 
 const PlaylistDetails = () => {
-  const [playlist, setPlaylist] = useState();
-  const [playlistVideos, setPlaylistVideos] = useState();
-
   const { id } = useParams();
   const { setLoading } = useContext(AppContext);
+
+  const [playlist, setPlaylist] = useState();
+  const [playlistVideos, setPlaylistVideos] = useState();
 
   const fetchPlaylistDetails = useCallback(() => {
     setLoading(true);
     fetchDataFromApi(`playlist/details/?id=${id}`).then((res) => {
-      console.log(res);
+      // console.log(res);
       setPlaylist(res);
       setLoading(false);
     });
@@ -38,9 +38,9 @@ const PlaylistDetails = () => {
 
   const fetchPlaylistVideos = useCallback(() => {
     setLoading(true);
-    fetchDataFromApi(`playlist/videos/?id=${id}`).then((res) => {
-      console.log(res);
-      setPlaylistVideos(res?.contents);
+    fetchDataFromApi(`playlist/videos/?id=${id}`).then(({ contents }) => {
+      // console.log(contents);
+      setPlaylistVideos(contents);
       setLoading(false);
     });
   }, [id]);
@@ -126,4 +126,4 @@ const PlaylistDetails = () => {
   );
 };
 
-export default PlaylistDetails;
+export default memo(PlaylistDetails);

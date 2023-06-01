@@ -21,17 +21,15 @@ import { BsKeyboard } from "react-icons/bs";
 import { fetchDataFromApi } from "../utils/api";
 import { AppContext } from "../context/contextApi";
 
-import AutoCompleteItem from "./AutoCompleteItem";
-import Loader from "../shared/loader";
+import AutoCompleteItem from "./Search/AutoCompleteItem";
+import { Loader } from "../shared/";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [result, setResult] = useState();
   const [showAutocomplete, setShowAutocomplete] = useState(false);
 
-  const { loading, mobileMenu, setLoading, setMobileMenu } = useContext(
-    AppContext
-  );
+  const { loading, mobileMenu, setMobileMenu } = useContext(AppContext);
 
   const wrapperRef = useRef();
   const navigate = useNavigate();
@@ -40,10 +38,8 @@ const Header = () => {
   const pageName = pathname?.split("/")?.filter(Boolean)?.[0];
 
   const fetchAutoCompleteResults = useCallback(() => {
-    setLoading(true);
     fetchDataFromApi(`auto-complete/?q=${searchQuery}`).then((res) => {
       setResult(res?.results);
-      setLoading(false);
     });
   }, [searchQuery]);
 
@@ -56,6 +52,7 @@ const Header = () => {
     const listener = (e) => {
       if (!wrapperRef.current.contains(e.target)) {
         setShowAutocomplete(false);
+        setSearchQuery("");
       }
     };
 
@@ -125,7 +122,7 @@ const Header = () => {
             value={searchQuery}
             id="Enter"
           />
-          <div className="bg-white absolute top-11 shadow-lg hover:shadow-xl">
+          <div className="bg-white absolute top-11 shadow-lg hover:shadow-xl rounded-xl">
             {showAutocomplete && (
               <ul className="grow w-full h-auto overflow-y-auto rounded-lg scrollbar-hide py-4">
                 {result &&

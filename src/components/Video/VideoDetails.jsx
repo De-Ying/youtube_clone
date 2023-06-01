@@ -12,15 +12,6 @@ import Carousel from "better-react-carousel";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-import SuggestionVideoCard from "./SuggestionVideoCard";
-import Expandable from "../shared/expandable";
-import VideoLength from "../shared/videoLength";
-import AbbreviateNumber from "../shared/abbreviateNumber";
-import CharacterConversion from "../shared/characterConversion";
-
-import { fetchDataFromApi } from "../utils/api";
-import { AppContext } from "../context/contextApi";
-
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import { IoMdMusicalNote } from "react-icons/io";
 import { AiOutlineEye, AiOutlineLike } from "react-icons/ai";
@@ -30,6 +21,21 @@ import { BsPin } from "react-icons/bs";
 import { BiDislike } from "react-icons/bi";
 import { FcLike } from "react-icons/fc";
 import { CiFaceSmile } from "react-icons/ci";
+import { TbArrowsShuffle } from "react-icons/tb";
+import { VscArrowSwap } from "react-icons/vsc";
+
+import SuggestionVideoCard from "./SuggestionVideoCard";
+import PlaylistNavCard from "../Playlist/PlaylistNavCard";
+
+import {
+  AbbreviateNumber,
+  CharacterConversion,
+  Expandable,
+  VideoLength,
+} from "../../shared/";
+
+import { fetchDataFromApi } from "../../utils/api";
+import { AppContext } from "../../context/contextApi";
 
 const VideoDetails = () => {
   const [video, setVideo] = useState();
@@ -45,13 +51,15 @@ const VideoDetails = () => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [showEmojiFeedback, setShowEmojiFeedback] = useState(false);
 
-  const { id } = useParams();
+  const [playlist, setPlaylist] = useState();
+  const [playlistVideos, setPlaylistVideos] = useState();
+
+  const { id, playlistId, idx } = useParams();
   const { setLoading } = useContext(AppContext);
 
   const fetchVideoDetails = useCallback(() => {
     setLoading(true);
     fetchDataFromApi(`video/details/?id=${id}`).then((res) => {
-      console.log(res);
       setVideo(res);
       setLoading(false);
     });
@@ -60,7 +68,6 @@ const VideoDetails = () => {
   const fetchRelatedVideos = useCallback(() => {
     setLoading(true);
     fetchDataFromApi(`video/related-contents/?id=${id}`).then((res) => {
-      console.log(res);
       setRelatedVideos(res);
       setLoading(false);
     });
@@ -69,18 +76,47 @@ const VideoDetails = () => {
   const fetchVideoComments = useCallback(() => {
     setLoading(true);
     fetchDataFromApi(`video/comments/?id=${id}`).then((res) => {
-      console.log(res);
       setComment(res);
       setLoading(false);
     });
   }, [id]);
+
+  const fetchPlaylistVideos = useCallback(() => {
+    setLoading(true);
+    fetchDataFromApi(`playlist/videos/?id=${playlistId}`).then(
+      ({ contents }) => {
+        setPlaylistVideos(contents);
+        console.log(contents);
+        setLoading(false);
+      }
+    );
+  }, [playlistId]);
+
+  const fetchPlaylistDetails = useCallback(() => {
+    setLoading(true);
+    fetchDataFromApi(`playlist/details/?id=${playlistId}`).then((res) => {
+      // console.log(res);
+      setPlaylist(res);
+      setLoading(false);
+    });
+  }, [playlistId]);
 
   useEffect(() => {
     document.getElementById("root").classList.add("custom-h");
     fetchVideoDetails();
     fetchRelatedVideos();
     fetchVideoComments();
-  }, [id, fetchVideoDetails, fetchRelatedVideos, fetchVideoComments]);
+    fetchPlaylistVideos();
+    fetchPlaylistDetails();
+  }, [
+    id,
+    playlistId,
+    fetchVideoDetails,
+    fetchRelatedVideos,
+    fetchVideoComments,
+    fetchPlaylistVideos,
+    fetchPlaylistDetails,
+  ]);
 
   function ConvertToNumber(nums) {
     let convert = nums.toString(10);
@@ -189,18 +225,24 @@ const VideoDetails = () => {
             <div className="flex text-white mt-4 md:mt-0">
               <div className="flex items-center justify-center h-11">
                 <AiOutlineLike className="text-xl text-white mr-2" />
-                <AbbreviateNumber>{video?.stats?.likes}</AbbreviateNumber> Likes
+                <AbbreviateNumber type="Likes">
+                  {video?.stats?.likes}
+                </AbbreviateNumber>
               </div>
               <div className="flex items-center justify-center h-11 ml-4">
                 <AiOutlineEye className="text-xl text-white mr-2" />
-                <AbbreviateNumber>{video?.stats?.views}</AbbreviateNumber> Views
+                <AbbreviateNumber type="Views">
+                  {video?.stats?.views}
+                </AbbreviateNumber>
               </div>
             </div>
           </div>
 
           <div className="bg-white/[0.15] mt-6 rounded-md px-3 py-3">
             <div className="text-white/[0.7] text-sm flex">
-              <AbbreviateNumber>{video?.stats?.views}</AbbreviateNumber> Views
+              <AbbreviateNumber type="Views">
+                {video?.stats?.views}
+              </AbbreviateNumber>
               <span className="mx-2">{video?.publishedDate}</span>
               {video?.superTitle?.items.map((item, idx) => (
                 <span key={idx} className="mr-1">
@@ -291,8 +333,9 @@ const VideoDetails = () => {
           </div>
 
           <div className="text-white text-base mt-4 flex items-center">
-            <AbbreviateNumber>{comment?.totalCommentsCount}</AbbreviateNumber>
-            Comment
+            <AbbreviateNumber type="Comment">
+              {comment?.totalCommentsCount}
+            </AbbreviateNumber>
             <div className="relative flex flex-col items-baseline w-auto h-auto rounded-lg ml-4 px-4 ">
               <button
                 onClick={() => setIsOpen((prev) => !prev)}
@@ -445,10 +488,9 @@ const VideoDetails = () => {
                     <div className="flex text-white mt-4 md:mt-0">
                       <div className="flex items-center justify-center h-11">
                         <AiOutlineLike className="text-xl text-white mr-2" />
-                        <AbbreviateNumber>
+                        <AbbreviateNumber type="Likes">
                           {item?.stats?.votes}
-                        </AbbreviateNumber>{" "}
-                        Likes
+                        </AbbreviateNumber>
                       </div>
 
                       <div className="flex items-center justify-center h-11 ml-4 mr-1">
@@ -556,12 +598,48 @@ const VideoDetails = () => {
           </div>
         </div>
 
-        <div className="flex flex-col py-6 px-4 overflow-y-auto lg:w-[350px] xl:w-[400px]">
-          {relatedVideos?.contents?.map((item, index) => {
-            if (item?.type !== "video") return false;
-            return <SuggestionVideoCard key={index} video={item?.video} />;
-          })}
-        </div>
+        {playlistVideos?.length > 0 ? (
+          <div className="flex flex-col py-6 px-4 overflow-y-auto lg:w-[350px] xl:w-[400px]">
+            <div className="border border-solid border-white/40 rounded-2xl shadow-lg">
+              <div className="text-white px-6 py-5">
+                <div className="mb-1">
+                  <div className="text-2xl">{playlist?.title}</div>
+                  <span className="text-white/80">
+                    {playlist?.author?.title} - {idx} /{" "}
+                    {playlist?.stats?.videos}
+                  </span>
+                </div>
+                <div>
+                  <button className="p-2.5 bg-white/[0.1] rounded-full mr-2 hover:bg-white/[0.3]">
+                    <TbArrowsShuffle />
+                  </button>
+                  <button className="p-2.5 bg-white/[0.1] rounded-full mr-2 hover:bg-white/[0.3]">
+                    <VscArrowSwap />
+                  </button>
+                </div>
+              </div>
+              <div className="overflow-y-scroll h-[70vh]">
+                {playlistVideos.map((item, idx) => {
+                  if (item?.type !== "video") return false;
+                  return (
+                    <PlaylistNavCard
+                      key={idx}
+                      video={item}
+                      playlistId={playlistId}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="flex flex-col py-6 px-4 overflow-y-auto lg:w-[350px] xl:w-[400px]">
+            {relatedVideos?.contents?.map((item, idx) => {
+              if (item?.type !== "video") return false;
+              return <SuggestionVideoCard key={idx} video={item?.video} />;
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
